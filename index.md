@@ -1,13 +1,18 @@
-# Cara Pakai VDES
+# All Note Mdoc
 * VDES
-  * [Dasar VDES](pages/basic%20vdes/Basic%20VDES.md)
-  * [Create VDES](pages/basic%20vdes/Create%20in%20VDES.md)
-  * [Read VDES](pages/basic%20vdes/Read%20VDES.md)
-  * [Update VDES](pages/basic%20vdes/Update%20VDES.md)
-  * [System Model VDES](pages/basic%20vdes/System%20Model%20VDES.md)
-  * [Feature-Export PDF](pages/basic%20vdes/Feature%20-%20Export%20PDF.md)
-  * [Import Excel (xlxs into Table)](pages/basic%20vdes/Add%20Export%20Excel%20into%20Table.md)
-* Library
-  * [Use FPDF3](pages/library/Cara%20Pakai%20fpdf3.md)
+  * Basic VDES
+    * [Dasar](pages/vdes/0%20Dasar%20VDES/Dasar.md)
+  * Algoritma CRUD
+    * [Create](pages/vdes/1%20Algoritma%20CRUD/0%20Create.md)
+    * [Read](pages/vdes/1%20Algoritma%20CRUD/1%20Read.md)
+    * [Update](pages/vdes/1%20Algoritma%20CRUD/2%20Update.md)
+  * The VDES
+    * System
+      * [Model](pages/vdes/2%20The%20VDES/System/Model.md)
+  * Feature
+    * Export VDES
+      * [Export PDF](pages/vdes/3%20Feature/Export%20PDF/Export%20PDF.md)
+      * [Advance PDF](pages/vdes/3%20Feature/Export%20PDF/Advance%20PDF.md)
+    * [Import Excel](pages/vdes/3%20Feature/Import%20Excel%20as%20Data.md)
 * Groupy
-  * [Explain Apps](pages/groupy/Penjelasan%20Aplikasi.md)
+  * [Deskripsi](pages/groupy/Penjelasan%20Aplikasi.md)
