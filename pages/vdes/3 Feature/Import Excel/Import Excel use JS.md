@@ -85,6 +85,7 @@ Pertama, buat form untuk upload file Excel:
             <label>Pilih File Excel (*.xlsx):</label>
             <input type="file" name="excel_file" class="form-control" accept=".xlsx" required>
           </div>
+          <!-- // ----------- Disesuaikan kembali sesuai dengan stuktur table ----------- -->
           <div class="alert alert-info">
             <strong>Catatan:</strong> Format Excel harus sesuai dengan kolom berikut:
             <ul>
@@ -96,18 +97,21 @@ Pertama, buat form untuk upload file Excel:
             </ul>
             <a href="<?php echo BASE_URL ?>static/files/template/template_product_import.xlsx" class="btn btn-xs bg-slate">Download Template</a>
           </div>
+          <!-- // ----------- ----------------------------------------------- ----------- -->
           <div id="preview-container" style="display:none;">
             <h6 class="text-semibold">Preview Data:</h6>
             <div class="table-responsive">
               <table class="table table-bordered table-striped" id="preview-table">
                 <thead>
                   <tr>
+                    <!-- // ----------- Disesuaikan kembali sesuai dengan stuktur table ----------- -->
                     <th>Nama Barang</th>
                     <th>Harga</th>
                     <th>Stock</th>
                     <th>Kategori</th>
                     <th>Supplier</th>
                   </tr>
+                  <!-- // ----------- ----------------------------------------------- ----------- -->
                 </thead>
                 <tbody>
                   <!-- Preview data akan ditampilkan di sini -->
