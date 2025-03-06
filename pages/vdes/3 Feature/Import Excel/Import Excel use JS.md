@@ -261,6 +261,7 @@ $(document).ready(function(){
           // Konversi ke array JSON
           var jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 'A'});
           
+          // ----------- Disesuaikan kembali sesuai dengan stuktur table -----------
           // Proses data untuk format yang diharapkan
           var processedData = [];
           for (var i = 1; i < jsonData.length; i++) { // Skip header row (index 0)
@@ -273,6 +274,7 @@ $(document).ready(function(){
               'supplier': row.E || ''
             });
           }
+          // ----------- ----------------------------------------------- -----------
           
           // Kirim data ke server untuk proses import
           $.ajax({
