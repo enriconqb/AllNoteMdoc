@@ -13,7 +13,9 @@
     * Export VDES
       * [Export PDF](pages/vdes/3%20Feature/Export%20PDF/Export%20PDF.md)
       * [Advance PDF](pages/vdes/3%20Feature/Export%20PDF/Advance%20PDF.md)
-    * [Import Excel](pages/vdes/3%20Feature/Import%20Excel%20as%20Data.md)
+    * Import Excel (xlsx)
+      * [Using PHPExcel](pages/vdes/3%20Feature/Import%20Excel/Import%20Excel%20us%20PHPExcel.md)
+      * [Using CDN JS](pages/vdes/3%20Feature/Import%20Excel/Import%20Excel%20use%20JS.md)
 * [Laravel](pages/laravel/TUTORIAL_LARAVEL_8_INDEX.md)
   * [Persiapan & Instalasi](pages/laravel/TUTORIAL_LARAVEL_8_BAGIAN1.md)
   * [Route & Controller](pages/laravel/TUTORIAL_LARAVEL_8_BAGIAN2.md)
