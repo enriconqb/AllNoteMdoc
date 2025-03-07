@@ -95,9 +95,10 @@ Pertama, buat form untuk upload file Excel:
               <li>Kategori (ID)</li>
               <li>Supplier (ID)</li>
             </ul>
-            <a href="<?php echo BASE_URL ?>static/files/template/template_product_import.xlsx" class="btn btn-xs bg-slate">Download Template</a>
+            <a href="<?php echo $data['curl'] ?>/generate_template_excel" class="btn btn-xs bg-slate">Download Template</a>
           </div>
           <!-- // ----------- ----------------------------------------------- ----------- -->
+           <div id="import-warning" style="display:none;"></div>
           <div id="preview-container" style="display:none;">
             <h6 class="text-semibold">Preview Data:</h6>
             <div class="table-responsive">
@@ -122,7 +123,7 @@ Pertama, buat form untuk upload file Excel:
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-          <button type="submit" class="btn btn-success">Import Data</button>
+          <button type="submit" class="btn btn-success" id="btn-import-excel" disabled>Import Data</button>
         </div>
       </form>
     </div>
@@ -144,6 +145,9 @@ $(document).ready(function(){
     var fileInput = this;
     if (fileInput.files && fileInput.files[0]) {
       var file = fileInput.files[0];
+
+      // Disable tombol import terlebih dahulu sampai validasi selesai
+      $('#btn-import-excel').prop('disabled', true);
       
       // Baca file Excel menggunakan SheetJS
       var reader = new FileReader();
@@ -167,7 +171,8 @@ $(document).ready(function(){
               'harga_barang': row.B || '',
               'stock': row.C || '',
               'kategori': row.D || '',
-              'supplier': row.E || ''
+              'supplier': row.E || '',
+              'excel_row': i + 1
             });
           }
           // ----------- ----------------------------------------------- -----------
@@ -182,6 +187,8 @@ $(document).ready(function(){
               try {
                 var result = (typeof response === 'string') ? JSON.parse(response) : response;
                 if (result.status == 'success') {
+
+                  // Tampilkan data valid di preview untuk data valid
                   $('#preview-container').show();
                   var tableBody = $('#preview-table tbody');
                   tableBody.empty();
@@ -203,22 +210,44 @@ $(document).ready(function(){
                   if (result.data.length > 5) {
                     tableBody.append('<tr><td colspan="5" class="text-center">... dan ' + (result.data.length - 5) + ' data lainnya</td></tr>');
                   }
+
+                  // Jika ada data invalid, tampilkan pop-up dan disable tombol import
+                  if (result.has_invalid_data) {
+                    showInvalidDataModal(result.invalid_data);
+                    $('#btn-import-excel').prop('disabled', true);
+                    
+                    // Tambahkan pesan warning di atas tombol import
+                    $('#import-warning').html(
+                      '<div class="alert alert-warning">' +
+                      '<i class="icon-warning2"></i> Terdapat ' + result.invalid_data.length + ' data yang bermasalah. ' +
+                      'Silakan perbaiki data di file Excel Anda sebelum melakukan import.' +
+                      '</div>'
+                    ).show();
+                  } else {
+                    // Jika semua data valid, enable tombol import
+                    $('#btn-import-excel').prop('disabled', false);
+                    $('#import-warning').hide();
+                  }
                 } else {
                   alert(result.message);
                   $('#preview-container').hide();
+                  $('#btn-import-excel').prop('disabled', true);
                 }
               } catch (e) {
                 console.error(e);
                 alert('Terjadi kesalahan saat memproses file');
+                $('#btn-import-excel').prop('disabled', true);
               }
             },
             error: function() {
               alert('Gagal mengunggah file untuk preview');
+              $('#btn-import-excel').prop('disabled', true);
             }
           });
         } catch (e) {
           console.error(e);
           alert('Terjadi kesalahan saat membaca file Excel');
+          $('#btn-import-excel').prop('disabled', true);
         }
       };
       
@@ -227,6 +256,76 @@ $(document).ready(function(){
     }
   });
 });
+```
+### JavaScript untuk Tempat dan Preview Data Excel Yang gagal
+
+Berikut kode JavaScript untuk membaca file Excel menggunakan SheetJS dan menampilkan preview data yang gagal:
+
+```javascript
+  // Fungsi untuk menampilkan modal data invalid
+  function showInvalidDataModal(invalidData) {
+    // Buat modal jika belum ada
+    if ($('#modal_invalid_data').length === 0) {
+      var modalHtml = `
+        <div id="modal_invalid_data" class="modal fade">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header bg-warning">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h6 class="modal-title"><i class="icon-warning2"></i>&nbsp; Data Yang Bermasalah</h6>
+              </div>
+              <div class="modal-body">
+                <div class="alert alert-warning">
+                  <strong>Perhatian!</strong> Beberapa data tidak dapat diproses karena terdapat kesalahan.
+                  Silakan periksa data berikut dan perbaiki file Excel Anda.
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th>Baris Excel</th>
+                        <th>Nama Barang</th>
+                        <th>Harga</th>
+                        <th>Stock</th>
+                        <th>Kategori</th>
+                        <th>Supplier</th>
+                        <th>Keterangan Error</th>
+                      </tr>
+                    </thead>
+                    <tbody id="invalid-data-table">
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-link" data-dismiss="modal">Tutup</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      $('body').append(modalHtml);
+    }
+
+    // Isi tabel dengan data invalid
+    var tableBody = $('#invalid-data-table');
+    tableBody.empty();
+    
+    $.each(invalidData, function(i, row) {
+      tableBody.append('<tr class="' + (row.error_type === 'kategori' ? 'bg-danger-100' : (row.error_type === 'supplier' ? 'bg-warning-100' : '')) + '">' +
+        '<td><strong>' + row.excel_row + '</strong></td>' +
+        '<td>' + (row.nama_barang || '-') + '</td>' +
+        '<td>' + (row.harga_barang ? 'Rp ' + parseFloat(row.harga_barang).toLocaleString('id-ID') : '-') + '</td>' +
+        '<td>' + (row.stock || '-') + '</td>' +
+        '<td>' + (row.kategori || '-') + '</td>' +
+        '<td>' + (row.supplier || '-') + '</td>' +
+        '<td>' + row.error_message + '</td>' +
+        '</tr>');
+    });
+
+    // Tampilkan modal
+    $('#modal_invalid_data').modal('show');
+  }
 ```
 
 ### JavaScript untuk Submit Form
@@ -404,7 +503,7 @@ public function import_excel()
             );
             
             // Validasi data
-            if (empty($data['nama_barang']) || empty($data['harga_barang']) || empty($data['stock'])) {
+            if (empty($data['nama_barang']) || empty($data['harga_barang']) || empty($data['stock']))) {
                 $gagal++;
                 continue;
             }

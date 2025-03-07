@@ -16,6 +16,8 @@
     * Import Excel (xlsx)
       * [Using PHPExcel](pages/vdes/3%20Feature/Import%20Excel/Import%20Excel%20us%20PHPExcel.md)
       * [Using CDN JS](pages/vdes/3%20Feature/Import%20Excel/Import%20Excel%20use%20JS.md)
+    * Generate Template Excel
+      * [Generate Template Excel](pages/vdes/3%20Feature/Generate%20Excel/Generate%20Template%20Excel.md)
 * [Laravel](pages/laravel/TUTORIAL_LARAVEL_8_INDEX.md)
   * [Persiapan & Instalasi](pages/laravel/TUTORIAL_LARAVEL_8_BAGIAN1.md)
   * [Route & Controller](pages/laravel/TUTORIAL_LARAVEL_8_BAGIAN2.md)
