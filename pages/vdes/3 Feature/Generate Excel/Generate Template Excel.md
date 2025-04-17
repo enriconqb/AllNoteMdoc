@@ -238,7 +238,36 @@ public function get_all_suppliers()
 {
     return $this->db->query("SELECT autono, nama_supplier FROM m_supplier ORDER BY nama_supplier")->fetchAll();
 }
+
+/**
+ * Memulai transaksi database
+ */
+public function beginTransaction()
+{
+	// Gunakan fungsi query yang sudah ada
+	$this->query("START TRANSACTION");
+}
+
+/**
+ * Commit transaksi database
+ */
+public function commit()
+{
+	// Gunakan fungsi query yang sudah ada
+	$this->query("COMMIT");
+}
+
+/**
+ * Rollback transaksi database
+ */
+public function rollback()
+{
+	// Gunakan fungsi query yang sudah ada
+	$this->query("ROLLBACK");
+}
 ```
+
+
 
 ### Tombol untuk Generate Template
 
